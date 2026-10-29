@@ -9,10 +9,10 @@ use App\Models\Poli;
 class AdminPoliController extends Controller
 {
     public function index()
-    {
-        $polis = Poli::all();
-        return view('admin.polis.index', compact('polis'));
-    }
+{
+    $polis = Poli::all(); // Mengambil semua data poli dari database
+    return view('admin.polis.index', compact('polis'));
+}
 
     public function create()
     {

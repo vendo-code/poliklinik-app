@@ -19,7 +19,7 @@
 
         {{-- SIDEBAR --}}
         <div id="appSidebar" class="sidebar-fixed">
-            @include('components.partials.sidebar')
+        @include('components.partials.sidebar')
         </div>
 
         {{-- OVERLAY --}}
@@ -28,8 +28,7 @@
         {{-- MAIN --}}
         <div class="main-content">
 
-            @include('components.partials.header')
-
+           @include('components.partials.header')
             <div class="main-scroll">
 
                 @if(session('success'))
@@ -46,7 +45,7 @@
                 </div>
                 @endif
 
-                {{ $slot }}
+                @yield('content')
 
             </div>
 
