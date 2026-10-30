@@ -50,26 +50,26 @@
                 Dashboard Admin
             </a>
 
-            <a href="{{ route('polis.index') }}"
-                class="{{ $baseLink }} {{ request()->routeIs('polis.*') ? $active : $inactive }}">
-                <i class="fas fa-hospital w-4 text-center"></i>
-                Manajemen Poli
-            </a>
+        <a href="{{ route('admin.polis.index') }}" 
+   class="{{ $baseLink }} {{ request()->routeIs('admin.polis.*') ? $active : $inactive }}">
+    <i class="fas fa-hospital w-4 text-center"></i>
+    Manajemen Poli
+</a>
 
-            <a href="{{ route('dokter.index') }}"
-                class="{{ $baseLink }} {{ request()->routeIs('dokter.*') ? $active : $inactive }}">
+           <a href="{{ route('admin.dokters.index') }}" 
+   class="{{ $baseLink }} {{ request()->routeIs('admin.dokters.*') ? $active : $inactive }}">
                 <i class="fas fa-user-doctor w-4 text-center"></i>
                 Manajemen Dokter
             </a>
 
-            <a href="{{ route('pasien.index') }}"
-                class="{{ $baseLink }} {{ request()->routeIs('pasien.*') ? $active : $inactive }}">
+          <a href="{{ route('admin.pasien.index') }}" 
+   class="{{ $baseLink }} {{ request()->routeIs('admin.pasien.*') ? $active : $inactive }}">
                 <i class="fas fa-bed-pulse w-4 text-center"></i>
                 Manajemen Pasien
             </a>
 
-            <a href="{{ route('obat.index') }}"
-                class="{{ $baseLink }} {{ request()->routeIs('obat.*') ? $active : $inactive }}">
+           <a href="{{ route('admin.obat.index') }}" 
+   class="{{ $baseLink }} {{ request()->routeIs('admin.obat.*') ? $active : $inactive }}">
                 <i class="fas fa-pills w-4 text-center"></i>
                 Manajemen Obat
             </a>

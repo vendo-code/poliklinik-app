@@ -10,16 +10,15 @@ use Illuminate\Support\Facades\Hash;
 
 class DokterController extends Controller
 {
-    public function index()
+   public function index()
     {
         $dokters = User::where('role', 'dokter')->with('poli')->get();
-        return view('admin.dokter.index', compact('dokters'));
+        return view('admin.dokter.index', compact('dokters')); // Ubah 'admin.dokter.index' jadi 'admin.dokters.index'
     }
-
-    public function create()
+   public function create()
     {
         $polis = Poli::all();
-        return view('admin.dokter.create', compact('polis'));
+        return view('admin.dokter.create', compact('polis')); // Ubah 'admin.dokter.create' jadi 'admin.dokters.create'
     }
 
     public function store(Request $request)
@@ -45,7 +44,7 @@ class DokterController extends Controller
             'role' => 'dokter',
         ]);
 
-        return redirect()->route('dokter.index')
+      return redirect()->route('admin.dokters.index')
             ->with('message', 'Data Dokter Berhasil di tambahkan')
             ->with('type', 'success');
     }
@@ -53,7 +52,7 @@ class DokterController extends Controller
     public function edit(User $dokter)
     {
         $polis = Poli::all();
-        return view('admin.dokter.edit', compact('dokter', 'polis'));
+        return view('admin.dokter.edit', compact('dokter', 'polis')); // Ubah 'admin.dokter.edit' jadi 'admin.dokters.edit'
     }
 
     public function update(Request $request, User $dokter)
@@ -81,18 +80,18 @@ class DokterController extends Controller
             $dokter->password = Hash::make($request->password);
         }
 
-        $dokter->update($updateData);
+      $dokter->update($updateData);
 
-        return redirect()->route('dokter.index')
+        return redirect()->route('admin.dokters.index')
             ->with('message', 'Data Dokter Berhasil di ubah')
             ->with('type', 'success');
     }
 
-    public function destroy(User $dokter)
+   public function destroy(User $dokter)
     {
         $dokter->delete();
 
-        return redirect()->route('dokter.index')
+        return redirect()->route('admin.dokters.index')
             ->with('message', 'Data Dokter Berhasil dihapus')
             ->with('type', 'success');
     }

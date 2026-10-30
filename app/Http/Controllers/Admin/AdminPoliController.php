@@ -9,32 +9,32 @@ use App\Models\Poli;
 class AdminPoliController extends Controller
 {
     public function index()
-{
-    $polis = Poli::all(); // Mengambil semua data poli dari database
-    return view('admin.polis.index', compact('polis'));
-}
+    {
+        $polis = Poli::all();
+        return view('admin.polis.index', compact('polis'));
+    }
 
     public function create()
     {
         return view('admin.polis.create');
     }
 
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'nama_poli' => 'required',
-            'keterangan' => 'nullable',
-        ]);
+   public function store(Request $request)
+{
+    $validated = $request->validate([
+        'nama_poli' => 'required',
+        'keterangan' => 'nullable',
+    ]);
 
-        Poli::create($validated);
-        return redirect()->route('polis.index')->with('success', 'Poli berhasil di tambahkan')->with('type', 'success');
-    }
+    Poli::create($validated);
+    return redirect()->route('admin.polis.index')->with('success', 'Poli berhasil di tambahkan');
+} // <-- Pastikan kurung kurawal tutup ini ada untuk menutup fungsi store
 
-    public function edit(string $id)
-    {
-        $poli = Poli::findOrFail($id);
-        return view('admin.polis.edit', compact('poli'));
-    }
+public function edit(string $id)
+{
+    $poli = Poli::findOrFail($id);
+    return view('admin.polis.edit', compact('poli'));
+}
 
     public function update(Request $request, string $id)
     {
@@ -45,13 +45,13 @@ class AdminPoliController extends Controller
 
         $poli = Poli::findOrFail($id);
         $poli->update($validated);
-        return redirect()->route('polis.index')->with('success', 'Polis berhasil di update');
+       return redirect()->route('admin.polis.index')->with('success', 'Polis berhasil di update');
     }
 
     public function destroy(string $id)
     {
         $poli = Poli::findOrFail($id);
         $poli->delete();
-        return redirect()->route('polis.index')->with('success', 'Polis Berhasil di hapus !');
+        return redirect()->route('admin.polis.index')->with('success', 'Polis Berhasil di hapus !');
     }
 }

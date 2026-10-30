@@ -1,4 +1,6 @@
-<x-layouts.app title="Data Dokter">
+@extends('components.layouts.app', ['title' => 'Data Dokter'])
+
+@section('content')
 
     {{-- Header --}}
     <div class="flex items-center justify-between mb-6">
@@ -6,109 +8,82 @@
             Data Dokter
         </h2>
 
-        <a href="{{ route('dokter.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-primary/90 
-                  text-white rounded-xl text-sm font-semibold transition">
-            <i class="fas fa-plus text-sm"></i>
+        <a href="{{ route('admin.dokters.create') }}" class="btn bg-[#2d4499] hover:bg-[#1e2d6b] text-white border-none rounded-lg px-5">
+            <i class="fas fa-plus mr-2"></i>
             Tambah Dokter
         </a>
     </div>
 
-    {{-- Card Table --}}
-    <div class="card bg-base-100 shadow-md rounded-2 border">
+    {{-- Card Tabel --}}
+    <div class="card bg-base-100 shadow-md rounded-2xl border border-slate-200">
         <div class="card-body p-0">
-
             <div class="overflow-x-auto">
-                <table class="table w-full">
-
-                    {{-- Table Head --}}
-                    <thead class="bg-slate-100 text-slate-600 text-xs uppercase tracking-wider">
+                <table class="table table-zebra w-full">
+                    {{-- Head --}}
+                    <thead class="bg-slate-100 text-slate-500 text-xs uppercase tracking-wider">
                         <tr>
                             <th class="px-6 py-4">Nama Dokter</th>
                             <th class="px-6 py-4">Email</th>
                             <th class="px-6 py-4">No. KTP</th>
-                            <th class="px-6 py-4">No. HP</th>
                             <th class="px-6 py-4">Alamat</th>
                             <th class="px-6 py-4">Poli</th>
+                            <th class="px-6 py-4">No. HP</th>
                             <th class="px-6 py-4 text-right">Aksi</th>
                         </tr>
                     </thead>
 
-                    {{-- Table Body --}}
-                    <tbody class="text-sm text-slate-700">
-
+                    {{-- Body --}}
+                    <tbody>
                         @forelse($dokters as $dokter)
-                        <tr class="border-b border-slate-100 hover:bg-slate-50 transition">
-
+                        <tr class="hover:bg-slate-50 transition">
                             <td class="px-6 py-4 font-semibold text-slate-800">
                                 {{ $dokter->nama }}
                             </td>
-
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-4 text-slate-500">
                                 {{ $dokter->email }}
                             </td>
-
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-4 text-slate-500">
                                 {{ $dokter->no_ktp ?? '-' }}
                             </td>
-
-                            <td class="px-6 py-4">
-                                {{ $dokter->no_hp ?? '-' }}
-                            </td>
-
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-4 text-slate-500">
                                 {{ $dokter->alamat ?? '-' }}
                             </td>
-
-                            <td class="px-6 py-4">
-                                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
-                                    {{ $dokter->poli->nama_poli ?? 'Belum Dipilih' }}
-                                </span>
+                            <td class="px-6 py-4 text-slate-500">
+                                {{ $dokter->poli->nama_poli ?? '-' }}
                             </td>
-
+                            <td class="px-6 py-4 text-slate-500">
+                                {{ $dokter->no_hp }}
+                            </td>
                             <td class="px-6 py-4 text-right">
-                                <div class="inline-flex items-center gap-2">
-
+                                <div class="flex justify-end gap-2">
                                     {{-- Edit --}}
-                                    <a href="{{ route('dokter.edit', $dokter->id) }}" class="inline-flex items-center gap-1 px-3 py-2 
-                                        bg-amber-500 hover:bg-amber-600 
-                                        text-white rounded-lg text-xs font-semibold transition">
-                                        <i class="fas fa-pen-to-square text-xs"></i>
+                                    <a href="{{ route('admin.dokters.edit', $dokter->id) }}" class="btn btn-sm bg-amber-500 hover:bg-amber-600 text-white border-none rounded-lg px-4">
                                         Edit
                                     </a>
 
                                     {{-- Delete --}}
-                                    <form action="{{ route('dokter.destroy', $dokter->id) }}" method="POST">
+                                    <form action="{{ route('admin.dokters.destroy', $dokter->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-
-                                        <button type="submit"
-                                            onclick="return confirm('Yakin ingin menghapus dokter ini?')" class="inline-flex items-center gap-1 px-3 py-2 
-                                             bg-red-500 hover:bg-red-600 
-                                             text-white rounded-lg text-xs font-semibold transition">
-                                            <i class="fas fa-trash text-xs"></i>
+                                        <button type="submit" onclick="return confirm('Yakin ingin menghapus dokter ini?')" class="btn btn-sm bg-red-500 hover:bg-red-600 text-white border-none rounded-lg px-4">
                                             Hapus
                                         </button>
                                     </form>
-
                                 </div>
                             </td>
-
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="7" class="text-center py-16 text-slate-400">
+                            <td colspan="7" class="text-center py-14 text-slate-400">
                                 <i class="fas fa-inbox text-3xl mb-3 block"></i>
                                 Belum ada data dokter
                             </td>
                         </tr>
                         @endforelse
-
                     </tbody>
-
                 </table>
             </div>
-
         </div>
     </div>
 
-</x-layouts.app>
+@endsection

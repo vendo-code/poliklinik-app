@@ -1,4 +1,6 @@
-<x-layouts.app title="Data Pasien">
+@extends('components.layouts.app', ['title' => 'Data Pasien'])
+
+@section('content')
 
     {{-- Header --}}
     <div class="flex items-center justify-between mb-6">
@@ -6,24 +8,19 @@
             Data Pasien
         </h2>
 
-        <a href="{{ route('pasien.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5
-                  bg-primary hover:bg-primary/90
-                  text-white text-sm font-semibold
-                  rounded-xl transition">
-            <i class="fas fa-plus text-xs"></i>
+        <a href="{{ route('admin.pasien.create') }}" class="btn bg-[#2d4499] hover:bg-[#1e2d6b] text-white border-none rounded-lg px-5">
+            <i class="fas fa-plus mr-2"></i>
             Tambah Pasien
         </a>
     </div>
 
-    {{-- Card --}}
-    <div class="card bg-base-100 shadow-md rounded-2 border">
+    {{-- Card Tabel --}}
+    <div class="card bg-base-100 shadow-md rounded-2xl border border-slate-200">
         <div class="card-body p-0">
-
             <div class="overflow-x-auto">
-                <table class="table w-full">
-
-                    {{-- Table Head --}}
-                    <thead class="bg-slate-50 text-slate-500 uppercase text-xs tracking-wider">
+                <table class="table table-zebra w-full">
+                    {{-- Head --}}
+                    <thead class="bg-slate-100 text-slate-500 text-xs uppercase tracking-wider">
                         <tr>
                             <th class="px-6 py-4">Nama Pasien</th>
                             <th class="px-6 py-4">Email</th>
@@ -34,76 +31,55 @@
                         </tr>
                     </thead>
 
-                    {{-- Table Body --}}
-                    <tbody class="text-sm text-slate-700">
+                    {{-- Body --}}
+                    <tbody>
                         @forelse($pasiens as $pasien)
-                        <tr class="border-t border-slate-100 hover:bg-slate-50 transition">
-
+                        <tr class="hover:bg-slate-50 transition">
                             <td class="px-6 py-4 font-semibold text-slate-800">
                                 {{ $pasien->nama }}
                             </td>
-
-                            <td class="px-6 py-4 text-slate-600">
+                            <td class="px-6 py-4 text-slate-500">
                                 {{ $pasien->email }}
                             </td>
-
-                            <td class="px-6 py-4 text-slate-600">
+                            <td class="px-6 py-4 text-slate-500">
                                 {{ $pasien->no_ktp ?? '-' }}
                             </td>
-
-                            <td class="px-6 py-4 text-slate-600">
+                            <td class="px-6 py-4 text-slate-500">
                                 {{ $pasien->no_hp ?? '-' }}
                             </td>
-
-                            <td class="px-6 py-4 text-slate-600">
+                            <td class="px-6 py-4 text-slate-500">
                                 {{ $pasien->alamat ?? '-' }}
                             </td>
-
                             <td class="px-6 py-4 text-right">
                                 <div class="flex justify-end gap-2">
-
                                     {{-- Edit --}}
-                                    <a href="{{ route('pasien.edit', $pasien->id) }}" class="inline-flex items-center gap-1 px-4 py-2
-                                              bg-amber-500 hover:bg-amber-600
-                                              text-white text-xs font-semibold
-                                              rounded-lg transition">
-                                        <i class="fas fa-pen text-xs"></i>
+                                    <a href="{{ route('admin.pasien.edit', $pasien->id) }}" class="btn btn-sm bg-amber-500 hover:bg-amber-600 text-white border-none rounded-lg px-4">
                                         Edit
                                     </a>
 
                                     {{-- Delete --}}
-                                    <form action="{{ route('pasien.destroy', $pasien->id) }}" method="POST">
+                                    <form action="{{ route('admin.pasien.destroy', $pasien->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-
-                                        <button type="submit"
-                                            onclick="return confirm('Yakin ingin menghapus pasien ini?')" class="inline-flex items-center gap-1 px-4 py-2
-                                                   bg-red-500 hover:bg-red-600
-                                                   text-white text-xs font-semibold
-                                                   rounded-lg transition">
-                                            <i class="fas fa-trash text-xs"></i>
+                                        <button type="submit" onclick="return confirm('Yakin ingin menghapus pasien ini?')" class="btn btn-sm bg-red-500 hover:bg-red-600 text-white border-none rounded-lg px-4">
                                             Hapus
                                         </button>
                                     </form>
-
                                 </div>
                             </td>
-
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" class="text-center py-12 text-slate-400">
+                            <td colspan="6" class="text-center py-14 text-slate-400">
                                 <i class="fas fa-inbox text-3xl mb-3 block"></i>
                                 Belum ada data pasien
                             </td>
                         </tr>
                         @endforelse
                     </tbody>
-
                 </table>
             </div>
-
         </div>
     </div>
 
-</x-layouts.app>
+@endsection

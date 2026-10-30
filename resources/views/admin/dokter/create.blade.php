@@ -1,158 +1,110 @@
-<x-layouts.app title="Tambah Dokter">
+@extends('components.layouts.app', ['title' => 'Tambah Dokter'])
 
-    {{-- Header --}}
+@section('content')
+
+    {{-- Tombol Kembali & Header --}}
     <div class="flex items-center gap-3 mb-6">
-        <a href="{{ route('dokter.index') }}" class="flex items-center justify-center w-9 h-9 rounded-lg 
-                  bg-slate-100 hover:bg-slate-200 
-                  text-slate-600 transition">
-            <i class="fas fa-arrow-left text-sm"></i>
+        <a href="{{ route('admin.dokters.index') }}" class="btn bg-slate-100 text-slate-600 hover:bg-slate-200 border-none rounded-lg">
+            <i class="fas fa-arrow-left"></i>
         </a>
-
         <h2 class="text-2xl font-bold text-slate-800">
             Tambah Dokter
         </h2>
     </div>
 
-    {{-- Card Form --}}
+    {{-- Card Form Putih --}}
     <div class="card bg-base-100 shadow-md rounded-2xl border border-slate-200">
         <div class="card-body p-8">
+            
+            {{-- Pesan Error Validasi --}}
+            @if ($errors->any())
+                <div class="alert alert-error mb-6 rounded-xl text-white">
+                    <ul class="list-disc pl-4">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
-            <form action="{{ route('dokter.store') }}" method="POST">
+            <form action="{{ route('admin.dokters.store') }}" method="POST">
                 @csrf
 
-                {{-- Grid 2 Column --}}
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-
-                    {{-- Nama --}}
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-semibold text-slate-700 text-sm">
-                                Nama Dokter <span class="text-red-500">*</span>
-                            </span>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    {{-- Nama Dokter --}}
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">
+                            Nama Dokter <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" name="nama" value="{{ old('nama') }}" placeholder="Masukkan nama dokter..."
-                            class="input input-bordered border-2 rounded-lg p-2 w-full 
-                                      focus:outline-none focus:ring-2 focus:ring-primary
-                                      @error('nama') input-error @enderror" required>
-                        @error('nama')
-                        <span class="text-xs text-red-500 mt-1">{{ $message }}</span>
-                        @enderror
+                        <input type="text" name="nama" value="{{ old('nama') }}" placeholder="Masukkan nama dokter..." class="input input-bordered w-full rounded-lg bg-white" required />
                     </div>
 
                     {{-- Email --}}
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-semibold text-slate-700 text-sm">
-                                Email <span class="text-red-500">*</span>
-                            </span>
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">
+                            Email <span class="text-red-500">*</span>
                         </label>
-                        <input type="email" name="email" value="{{ old('email') }}" placeholder="Masukkan email..."
-                            class="input input-bordered border-2 rounded-lg p-2 w-full 
-                                      focus:ring-2 focus:ring-primary
-                                      @error('email') input-error @enderror" required>
-                        @error('email')
-                        <span class="text-xs text-red-500 mt-1">{{ $message }}</span>
-                        @enderror
+                        <input type="email" name="email" value="{{ old('email') }}" placeholder="email@example.com" class="input input-bordered w-full rounded-lg bg-white" required />
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    {{-- No. KTP --}}
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">
+                            No. KTP <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" name="no_ktp" value="{{ old('no_ktp') }}" placeholder="Masukkan No. KTP..." class="input input-bordered w-full rounded-lg bg-white" required />
                     </div>
 
-                    {{-- No KTP --}}
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-semibold text-slate-700 text-sm">
-                                No. KTP <span class="text-red-500">*</span>
-                            </span>
+                    {{-- No. HP --}}
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">
+                            No. HP <span class="text-red-500">*</span>
                         </label>
-                        <input type="number" name="no_ktp" value="{{ old('no_ktp') }}" placeholder="Masukkan No. KTP..."
-                            class="input input-bordered border-2 rounded-lg p-2 w-full
-                                      focus:ring-2 focus:ring-primary
-                                      @error('no_ktp') input-error @enderror" required>
-                        @error('no_ktp')
-                        <span class="text-xs text-red-500 mt-1">{{ $message }}</span>
-                        @enderror
+                        <input type="text" name="no_hp" value="{{ old('no_hp') }}" placeholder="Masukkan No. HP..." class="input input-bordered w-full rounded-lg bg-white" required />
                     </div>
-
-                    {{-- No HP --}}
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text font-semibold text-slate-700 text-sm">
-                                No. HP <span class="text-red-500">*</span>
-                            </span>
-                        </label>
-                        <input type="number" name="no_hp" value="{{ old('no_hp') }}" placeholder="Masukkan No. HP..."
-                            class="input input-bordered border-2 rounded-lg p-2 w-full
-                                      focus:ring-2 focus:ring-primary
-                                      @error('no_hp') input-error @enderror" required>
-                        @error('no_hp')
-                        <span class="text-xs text-red-500 mt-1">{{ $message }}</span>
-                        @enderror
-                    </div>
-
                 </div>
 
                 {{-- Alamat --}}
-                <div class="form-control mb-6">
-                    <label class="label">
-                        <span class="label-text font-semibold text-slate-700 text-sm">
-                            Alamat <span class="text-red-500">*</span>
-                        </span>
+                <div class="mb-4">
+                    <label class="block text-sm font-semibold text-slate-700 mb-2">
+                        Alamat <span class="text-red-500">*</span>
                     </label>
-                    <textarea name="alamat" rows="3" placeholder="Masukkan alamat..." class="textarea textarea-bordered border-2 rounded-lg p-2 w-full
-                                     focus:ring-2 focus:ring-primary
-                                     @error('alamat') textarea-error @enderror" required>{{ old('alamat') }}</textarea>
-                    @error('alamat')
-                    <span class="text-xs text-red-500 mt-1">{{ $message }}</span>
-                    @enderror
+                    <textarea name="alamat" placeholder="Masukkan alamat..." class="textarea textarea-bordered w-full rounded-lg bg-white h-24" required>{{ old('alamat') }}</textarea>
                 </div>
 
-                {{-- Poli --}}
-                <div class="form-control mb-6">
-                    <label class="label">
-                        <span class="label-text font-semibold text-slate-700 text-sm">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    {{-- Pilih Poli --}}
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">
                             Poli <span class="text-red-500">*</span>
-                        </span>
-                    </label>
-                    <select name="id_poli" class="select select-bordered border-2 rounded-lg p-2 w-full
-                                   focus:ring-2 focus:ring-primary
-                                   @error('id_poli') select-error @enderror" required>
-                        <option value="">Pilih Poli</option>
-                        @foreach($polis as $poli)
-                        <option value="{{ $poli->id }}" {{ old('id_poli')==$poli->id ? 'selected' : '' }}>
-                            {{ $poli->nama_poli }}
-                        </option>
-                        @endforeach
-                    </select>
-                    @error('id_poli')
-                    <span class="text-xs text-red-500 mt-1">{{ $message }}</span>
-                    @enderror
-                </div>
+                        </label>
+                        <select name="id_poli" class="select select-bordered w-full rounded-lg bg-white" required>
+                            <option value="">Pilih Poli</option>
+                            @foreach($polis as $poli)
+                                <option value="{{ $poli->id }}" {{ old('id_poli') == $poli->id ? 'selected' : '' }}>
+                                    {{ $poli->nama_poli }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                {{-- Password --}}
-                <div class="form-control mb-8">
-                    <label class="label">
-                        <span class="label-text font-semibold text-slate-700 text-sm">
+                    {{-- Password --}}
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">
                             Password <span class="text-red-500">*</span>
-                        </span>
-                    </label>
-                    <input type="password" name="password" placeholder="Minimal 8 karakter..." class="input input-bordered border-2 rounded-lg p-2 w-full
-                                  focus:ring-2 focus:ring-primary
-                                  @error('password') input-error @enderror" required>
-                    @error('password')
-                    <span class="text-xs text-red-500 mt-1">{{ $message }}</span>
-                    @enderror
+                        </label>
+                        <input type="password" name="password" placeholder="••••••••" class="input input-bordered w-full rounded-lg bg-white" required />
+                    </div>
                 </div>
 
-                {{-- Buttons --}}
+                {{-- Tombol Aksi --}}
                 <div class="flex items-center gap-3">
-                    <button type="submit" class="inline-flex items-center gap-2 px-6 py-2.5
-                               bg-primary hover:bg-primary/90
-                               text-white border-2 rounded-lg p-2 font-semibold text-sm transition">
-                        <i class="fas fa-save text-sm"></i>
+                    <button type="submit" class="btn bg-[#2d4499] hover:bg-[#1e2d6b] text-white border-none rounded-lg px-6">
                         Simpan
                     </button>
-
-                    <a href="{{ route('dokter.index') }}" class="inline-flex items-center gap-2 px-6 py-2.5
-                              bg-slate-100 hover:bg-slate-200
-                              text-slate-600 rounded-xl font-semibold text-sm transition">
+                    <a href="{{ route('admin.dokters.index') }}" class="btn bg-slate-200 hover:bg-slate-300 text-slate-700 border-none rounded-lg px-6">
                         Batal
                     </a>
                 </div>
@@ -161,4 +113,4 @@
         </div>
     </div>
 
-</x-layouts.app>
+@endsection
