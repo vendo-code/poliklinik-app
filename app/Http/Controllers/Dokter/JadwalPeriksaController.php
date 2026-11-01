@@ -9,12 +9,14 @@ use Illuminate\Support\Facades\Auth;
 
 class JadwalPeriksaController extends Controller
 {
-    public function index(){
-        $dokter = Auth::user();
-        $jadwalPeriksas = JadwalPeriksa::where('id_dokter', $dokter->id)->orderBy('hari')->get();
-        return view('dokter.jadwal-periksa.index', compact('jadwalPeriksas'));
-    }
+   public function index()
+{
+    // Ambil semua data jadwal periksa (atau sesuaikan dengan dokter yang sedang login)
+    $jadwals = \App\Models\JadwalPeriksa::all();
 
+    // Kirim variabel $jadwals ke view index
+    return view('Dokter.jadwal-periksa.index', compact('jadwals'));
+}
     public function create(){
         return view('dokter.jadwal-periksa.create');
     }
@@ -32,10 +34,8 @@ class JadwalPeriksaController extends Controller
             'jam_mulai' => $request->jam_mulai,
             'jam_selesai' => $request->jam_selesai
         ]);
-
-        return redirect()->route('jadwal-periksa.index')
-            ->with('message', 'Data Berhasil di Simpan')
-            ->with('type', 'success');
+return redirect()->route('dokter.jadwal-periksa.index')
+                 ->with('success', 'Jadwal periksa berhasil ditambahkan!');
     }
 
     public function edit($id){
@@ -43,31 +43,34 @@ class JadwalPeriksaController extends Controller
         return view('dokter.jadwal-periksa.edit', compact('jadwalPeriksa'));
     }
 
-    public function update(Request $request, string $id){
-        $request->validate([
-            'hari' => 'required',
-            'jam_mulai' => 'required',
-            'jam_selesai' => 'required'
-        ]);
+  public function update(Request $request, $id)
+{
+    $request->validate([
+        'hari' => 'required',
+        'jam_mulai' => 'required',
+        'jam_selesai' => 'required',
+        'aktif' => 'required|in:Y,N',
+    ]);
 
-        $jadwalPeriksa = JadwalPeriksa::findOrFail($id);
-        $jadwalPeriksa->update([
-            'hari' => $request->hari,
-            'jam_mulai' => $request->jam_mulai,
-            'jam_selesai' => $request->jam_selesai
-        ]);
+    $jadwal = JadwalPeriksa::findOrFail($id);
+    
+    // Pastikan field 'aktif' disertakan saat mengupdate data
+    $jadwal->update([
+        'hari' => $request->hari,
+        'jam_mulai' => $request->jam_mulai,
+        'jam_selesai' => $request->jam_selesai,
+        'aktif' => $request->aktif, 
+    ]);
 
-        return redirect()->route('jadwal-periksa.index')
-            ->with('message', 'Berhasil Melakukan Update Data')
-            ->with('type', 'success');
-    }
+    return redirect()->route('dokter.jadwal-periksa.index')
+                     ->with('success', 'Berhasil Melakukan Update Data');
+}
 
     public function destroy(string $id){
         $jadwalPeriksa = JadwalPeriksa::findOrFail($id);
         $jadwalPeriksa->delete();
 
-        return redirect()->route('jadwal-periksa.index')
-            ->with('message', 'Berhasil Melakukan Hapus Data')
-            ->with('type', 'success');
+        return redirect()->route('dokter.jadwal-periksa.index')
+                 ->with('success', 'Berhasil Melakukan Hapus Data');
     }
 }

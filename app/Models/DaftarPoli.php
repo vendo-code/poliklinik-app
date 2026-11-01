@@ -12,21 +12,17 @@ class DaftarPoli extends Model
         'id_pasien',
         'id_jadwal',
         'keluhan',
-        'no_antrian'
+        'no_antrian',
     ];
 
+    // Tambahkan relasi ini untuk mengatasi error
     public function pasien()
     {
         return $this->belongsTo(User::class, 'id_pasien');
     }
 
-    public function jadwalPeriksa()
+    public function jadwal()
     {
         return $this->belongsTo(JadwalPeriksa::class, 'id_jadwal');
-    }
-
-    public function periksas()
-    {
-        return $this->hasMany(Periksa::class, 'id_daftar_poli');
     }
 }

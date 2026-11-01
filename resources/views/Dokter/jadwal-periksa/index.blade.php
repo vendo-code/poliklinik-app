@@ -1,118 +1,57 @@
-<x-layouts.app title="Jadwal Periksa">
+@extends('components.layouts.app', ['title' => 'Jadwal Periksa'])
 
-    {{-- Header --}}
+@section('content')
+<div class="container mx-auto px-4 py-6">
     <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold text-slate-800">
-            Jadwal Periksa
-        </h2>
-
-        <a href="{{ route('jadwal-periksa.create') }}" class="btn bg-[#2d4499] hover:bg-[#1e2d6b] 
-                  text-white border-none rounded-lg px-5">
-            <i class="fas fa-plus"></i>
-            Tambah Jadwal Periksa
+        <h2 class="text-2xl font-bold text-slate-800">Jadwal Periksa</h2>
+        <a href="{{ route('dokter.jadwal-periksa.create') }}" class="btn bg-[#2d4499] hover:bg-[#1e2d6b] text-white border-none rounded-lg px-5">
+            <i class="fas fa-plus mr-2"></i> Tambah Jadwal
         </a>
     </div>
 
-    {{-- Alert Flash Message --}}
-    @if (session('message'))
-    <div class="alert alert-{{ session('type', 'success') }} alert-dismissible mb-4 rounded-xl shadow-sm" role="alert">
-        <i class="fas fa-circle-check"></i>
-        <span>{{ session('message') }}</span>
+    <div class="card bg-white shadow-md rounded-2xl p-6 border border-slate-200">
+        <table class="table table-zebra w-full">
+            <thead>
+                <tr class="bg-slate-100 text-slate-600">
+                    <th>No</th>
+                    <th>Hari</th>
+                    <th>Jam Mulai</th>
+                    <th>Jam Selesai</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @isset($jadwals)
+                    @forelse($jadwals as $index => $jadwal)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $jadwal->hari }}</td>
+                        <td>{{ $jadwal->jam_mulai }}</td>
+                        <td>{{ $jadwal->jam_selesai }}</td>
+                        <td>
+                            <span class="badge {{ $jadwal->aktif == 'Y' ? 'bg-green-100 text-green-700 border-green-200' : 'bg-red-100 text-red-700 border-red-200' }}">
+                                {{ $jadwal->aktif == 'Y' ? 'Aktif' : 'Tidak Aktif' }}
+                            </span>
+                        </td>
+                        <td class="flex items-center gap-2">
+                            <!-- Tombol Edit -->
+                            <a href="{{ route('dokter.jadwal-periksa.edit', $jadwal->id) }}" class="btn btn-sm bg-amber-500 hover:bg-amber-600 text-white border-none">Edit</a>
+                            
+                            <!-- Tombol Hapus yang Diperbaiki -->
+                            <form action="{{ route('dokter.jadwal-periksa.destroy', $jadwal->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus jadwal ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm bg-red-500 hover:bg-red-600 text-white border-none">Hapus</button>
+                            </form>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr><td colspan="6" class="text-center text-slate-400 py-4">Belum ada jadwal periksa.</td></tr>
+                    @endforelse
+                @endisset
+            </tbody>
+        </table>
     </div>
-    @endif
-
-    {{-- Card --}}
-    <div class="card bg-base-100 shadow-md rounded-2 border">
-        <div class="card-body p-0">
-
-            <div class="overflow-x-auto">
-                <table class="table table-zebra w-full">
-
-                    {{-- Head --}}
-                    <thead class="bg-slate-100 text-slate-500 text-xs uppercase tracking-wider">
-                        <tr>
-                            <th class="px-6 py-4">ID</th>
-                            <th class="px-6 py-4">Hari</th>
-                            <th class="px-6 py-4">Jam Mulai</th>
-                            <th class="px-6 py-4">Jam Selesai</th>
-                            <th class="px-6 py-4 text-right">Aksi</th>
-                        </tr>
-                    </thead>
-
-                    {{-- Body --}}
-                    <tbody>
-                        @forelse ($jadwalPeriksas as $jadwalPeriksa)
-                        <tr class="hover:bg-slate-50 transition">
-
-                            <td class="px-6 py-4 text-slate-500">
-                                {{ $jadwalPeriksa->id }}
-                            </td>
-
-                            <td class="px-6 py-4 font-semibold text-slate-800">
-                                {{ $jadwalPeriksa->hari }}
-                            </td>
-
-                            <td class="px-6 py-4 text-slate-500">
-                                {{ \Carbon\Carbon::parse($jadwalPeriksa->jam_mulai)->format('H:i') }}
-                            </td>
-
-                            <td class="px-6 py-4 text-slate-500">
-                                {{ \Carbon\Carbon::parse($jadwalPeriksa->jam_selesai)->format('H:i') }}
-                            </td>
-
-                            <td class="px-6 py-4 text-right">
-                                <div class="flex justify-end gap-2">
-
-                                    {{-- Edit --}}
-                                    <a href="{{ route('jadwal-periksa.edit', $jadwalPeriksa->id) }}" class="btn btn-sm bg-amber-500 hover:bg-amber-600 
-                                                  text-white border-none rounded-lg px-4">
-                                        <i class="fas fa-pen-to-square"></i>
-                                        Edit
-                                    </a>
-
-                                    {{-- Delete --}}
-                                    <form action="{{ route('jadwal-periksa.destroy', $jadwalPeriksa->id) }}" method="POST" style="display: inline-block;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit"
-                                            onclick="return confirm('Yakin ingin menghapus Data Jadwal Periksa ini?')" class="btn btn-sm bg-red-500 hover:bg-red-600 
-                                                       text-white border-none rounded-lg px-4">
-                                            <i class="fas fa-trash"></i>
-                                            Hapus
-                                        </button>
-                                    </form>
-
-                                </div>
-                            </td>
-
-                        </tr>
-                        @empty
-<tr>
-    <td colspan="5" class="text-center py-14 text-slate-400">
-        <div class="flex flex-col items-center justify-center gap-2">
-            <i class="fas fa-inbox text-3xl"></i>
-            <span>Belum ada Jadwal Periksa</span>
-        </div>
-    </td>
-</tr>
-@endforelse
-                    </tbody>
-
-                </table>
-            </div>
-
-        </div>
-    </div>
-
-    <script>
-        setTimeout(() => {
-            const alert = document.querySelector('.alert');
-            if (alert) {
-                alert.classList.remove('show');
-                alert.classList.add('fade');
-                setTimeout(() => alert.remove(), 500);
-            }
-        }, 2000);
-    </script>
-
-</x-layouts.app>
+</div>
+@endsection

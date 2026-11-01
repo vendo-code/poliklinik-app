@@ -3,48 +3,51 @@
 namespace App\Http\Controllers\Pasien;
 
 use App\Http\Controllers\Controller;
-use App\Models\DaftarPoli;
-use App\Models\JadwalPeriksa;
-use App\Models\Poli;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Poli;
+use App\Models\JadwalPeriksa;
+use App\Models\DaftarPoli;
 
 class PoliController extends Controller
 {
-    public function get()
+    // Halaman utama pasien / dashboard
+    public function dashboard()
     {
-        $user = Auth::user();
+        return view('pasien.dashboard');
+    }
+
+    // Menampilkan halaman pendaftaran poli beserta daftar riwayat pendaftarannya
+    public function index()
+    {
         $polis = Poli::all();
-        $jadwal = JadwalPeriksa::with('dokter', 'dokter.poli')->get();
-
-        return view('pasien.daftar', [
-            'user' => $user,
-            'polis' => $polis,
-            'jadwals' => $jadwal,
-        ]);
+        $jadwals = JadwalPeriksa::with('dokter')->where('aktif', 'Y')->get();
+        
+        $daftarPolis = DaftarPoli::where('id_pasien', Auth::id())
+            ->with(['jadwal.poli', 'jadwal.dokter'])
+            ->get();
+            
+        return view('pasien.daftar', compact('polis', 'jadwals', 'daftarPolis'));
     }
 
-    public function submit(Request $request)
-    {
-        $request->validate([
-            'id_poli' => 'required|exists:poli,id',
-            'id_jadwal' => 'required|exists:jadwal_periksa,id',
-            'keluhan' => 'nullable|string',
-            'id_pasien' => 'required|exists:users,id',
-        ]);
+    // Memproses penyimpanan data saat tombol "Daftar" diklik
+    public function store(Request $request)
+{
+    $request->validate([
+        'id_jadwal' => 'required|exists:jadwal_periksa,id',
+        'keluhan' => 'required|string',
+    ]);
 
-        $jumlahSudahDaftar = DaftarPoli::where('id_jadwal', $request->id_jadwal)->count();
+    $noAntrian = DaftarPoli::where('id_jadwal', $request->id_jadwal)->count() + 1;
 
-        DaftarPoli::create([
-            'id_pasien' => $request->id_pasien,
-            'id_jadwal' => $request->id_jadwal,
-            'keluhan' => $request->keluhan,
-            'no_antrian' => $jumlahSudahDaftar + 1,
-        ]);
+    DaftarPoli::create([
+        'id_pasien' => Auth::id(),
+        'id_jadwal' => $request->id_jadwal,
+        'keluhan' => $request->keluhan,
+        'no_antrian' => $noAntrian,
+        // Hapus baris 'status' karena kolomnya belum ada di database
+    ]);
 
-        return redirect()
-            ->back()
-            ->with('message', 'Berhasil Mendaftar ke Poli')
-            ->with('type', 'success');
-    }
+    return redirect()->route('pasien.daftar-poli.index')->with('success', 'Berhasil mendaftar poli!');
+}
 }

@@ -6,16 +6,15 @@
     </button>
 
     {{-- Breadcrumb --}}
-    <div class="flex-1">
-        <div class="flex items-center gap-2 text-sm">
-            <span class="text-base-content/50">Poliklinik</span>
-            <i data-lucide="chevron-right" class="w-4 h-4 text-base-content/30"></i>
-            <span class="font-semibold text-base-content">
-                {{ $title ?? 'Dashboard' }}
-            </span>
-        </div>
-    </div>
-
+   <h2 class="font-semibold text-xl text-gray-800">
+    @if(request()->routeIs('pasien.daftar-poli*'))
+        Pendaftaran Poli
+    @elseif(request()->routeIs('dokter.periksa-pasien*'))
+        Pemeriksaan Pasien
+    @else
+        Dashboard
+    @endif
+</h2>
     {{-- Fullscreen --}}
     <button onclick="toggleFullscreen()" class="btn btn-square btn-ghost">
         <i id="fsIcon" class="fas fa-expand w-5 h-5"></i>

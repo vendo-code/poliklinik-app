@@ -88,5 +88,11 @@ class PasienController extends Controller
             ->with('message', 'Data Pasien berhasil dihapus')
             ->with('type', 'success');
     }
+
+    public function getJadwal($id_poli)
+{
+    $jadwal = \App\Models\JadwalPeriksa::where('id_poli', $id_poli)->where('aktif', 'Y')->get();
+    return response()->json($jadwal);
+}
 }
 

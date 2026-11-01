@@ -79,35 +79,43 @@
 
         {{-- ================= DOKTER ================= --}}
         @if(request()->is('dokter*'))
-        <p class="text-xs uppercase tracking-widest text-indigo-400 px-3 mb-3 mt-6">
-            Menu Dokter
-        </p>
-
-        <div class="space-y-1">
-            <a href="{{ route('dokter.dashboard') }}"
-                class="{{ $baseLink }} {{ request()->routeIs('dokter.dashboard') ? $active : $inactive }}">
-                <i class="fas fa-stethoscope w-4 text-center"></i>
+       <div class="px-4 py-2">
+    <p class="text-xs uppercase text-slate-400 font-semibold mb-2">Menu Dokter</p>
+    
+    <ul class="space-y-1">
+        {{-- Dashboard Dokter --}}
+        <li>
+            <a href="{{ route('dokter.dashboard') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-xl font-medium {{ request()->routeIs('dokter.dashboard') ? 'bg-white/10 text-white' : 'text-slate-300 hover:bg-white/5 hover:text-white' }}">
+                <i class="fas fa-stethoscope w-5 text-center"></i>
                 Dashboard Dokter
             </a>
+        </li>
 
-            <a href="{{ route('jadwal-periksa.index') }}"
-                class="{{ $baseLink }} {{ request()->routeIs('jadwal-periksa.*') ? $active : $inactive }}">
-                <i class="fas fa-calendar-days w-4 text-center"></i>
+        {{-- Jadwal Periksa --}}
+        <li>
+            <a href="{{ route('dokter.jadwal-periksa.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-xl font-medium {{ request()->routeIs('dokter.jadwal-periksa.*') ? 'bg-white/10 text-white' : 'text-slate-300 hover:bg-white/5 hover:text-white' }}">
+                <i class="fas fa-calendar-days w-5 text-center"></i>
                 Jadwal Periksa
             </a>
+        </li>
 
-            <a href="{{ route('periksa-pasien.index') }}"
-                class="{{ $baseLink }} {{ request()->routeIs('periksa-pasien.*') ? $active : $inactive }}">
-                <i class="fas fa-notes-medical w-4 text-center"></i>
+        {{-- Periksa Pasien --}}
+        <li>
+            <a href="{{ route('dokter.periksa-pasien.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-xl font-medium {{ request()->routeIs('dokter.periksa-pasien.*') ? 'bg-white/10 text-white' : 'text-slate-300 hover:bg-white/5 hover:text-white' }}">
+                <i class="fas fa-user-doctor w-5 text-center"></i>
                 Periksa Pasien
             </a>
+        </li>
 
-            <a href="{{ route('riwayat-pasien.index') }}"
-                class="{{ $baseLink }} {{ request()->routeIs('riwayat-pasien.*') ? $active : $inactive }}">
-                <i class="fas fa-clock-rotate-left w-4 text-center"></i>
+        {{-- Riwayat Pasien --}}
+        <li>
+            <a href="{{ route('dokter.riwayat-pasien.index') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-xl font-medium {{ request()->routeIs('dokter.riwayat-pasien.*') ? 'bg-white/10 text-white' : 'text-slate-300 hover:bg-white/5 hover:text-white' }}">
+                <i class="fas fa-history w-5 text-center"></i>
                 Riwayat Pasien
             </a>
-        </div>
+        </li>
+    </ul>
+</div>
         @endif
 
 
@@ -118,13 +126,13 @@
         </p>
 
         <div class="space-y-1">
-            <a href="{{ route('pasien.dashboard') }}"
+            <a href="{{ route('pasien.daftar-poli.index') }}"
                 class="{{ $baseLink }} {{ request()->routeIs('pasien.dashboard') ? $active : $inactive }}">
                 <i class="fas fa-house-medical w-4 text-center"></i>
                 Dashboard Pasien
             </a>
 
-            <a href="{{ route('pasien.daftar') }}"
+            <a href="{{ route('pasien.daftar-poli.index') }}"
                 class="{{ $baseLink }} {{ request()->routeIs('pasien.daftar') ? $active : $inactive }}">
                 <i class="fas fa-file-medical w-4 text-center"></i>
                 Pendaftaran Periksa
