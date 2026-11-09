@@ -1,28 +1,31 @@
-<header class="bg-base-100 border-b border-base-300 h-16 flex items-center px-6 gap-4 sticky top-0 z-30 shadow-sm">
+<header class="bg-base-100 border-b border-base-300 h-16 flex items-center justify-between px-6 gap-4 sticky top-0 z-30 shadow-sm">
 
-    {{-- Mobile Hamburger --}}
-    <button onclick="toggleSidebar()" class="btn btn-square btn-ghost lg:hidden">
-        <i data-lucide="menu" class="w-5 h-5"></i>
-    </button>
-
-    {{-- Breadcrumb --}}
-   <h2 class="font-semibold text-xl text-gray-800">
-    @if(request()->routeIs('pasien.daftar-poli*'))
-        Pendaftaran Poli
-    @elseif(request()->routeIs('dokter.periksa-pasien*'))
-        Pemeriksaan Pasien
-    @else
-        Dashboard
-    @endif
-</h2>
-    {{-- Fullscreen --}}
-    <button onclick="toggleFullscreen()" class="btn btn-square btn-ghost">
-        <i id="fsIcon" class="fas fa-expand w-5 h-5"></i>
-    </button>
-
-    {{-- User Info --}}
+    {{-- Kiri: Mobile Hamburger, Breadcrumb, & Fullscreen --}}
     <div class="flex items-center gap-3">
+        {{-- Mobile Hamburger --}}
+        <button onclick="toggleSidebar()" class="btn btn-square btn-ghost lg:hidden">
+            <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
 
+        {{-- Breadcrumb --}}
+        <h2 class="font-semibold text-xl text-gray-800">
+            @if(request()->routeIs('pasien.daftar-poli*'))
+                Pendaftaran Poli
+            @elseif(request()->routeIs('dokter.periksa-pasien*'))
+                Pemeriksaan Pasien
+            @else
+                Dashboard
+            @endif
+        </h2>
+
+        {{-- Fullscreen --}}
+        <button onclick="toggleFullscreen()" class="btn btn-square btn-ghost">
+            <i id="fsIcon" class="fas fa-expand w-5 h-5"></i>
+        </button>
+    </div>
+
+    {{-- Kanan: User Info (Otomatis terdorong ke pojok karena justify-between di header) --}}
+    <div class="flex items-center gap-3">
         <div class="text-right hidden sm:block">
             <div class="text-sm font-semibold leading-tight">
                 {{ auth()->user()->name ?? 'Pengguna' }}
@@ -45,16 +48,16 @@
 
 <script>
     function toggleFullscreen() {
-    const icon = document.getElementById('fsIcon');
+        const icon = document.getElementById('fsIcon');
 
-    if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-        icon.classList.remove('fa-expand');
-        icon.classList.add('fa-compress');
-    } else {
-        document.exitFullscreen();
-        icon.classList.remove('fa-compress');
-        icon.classList.add('fa-expand');
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+            icon.classList.remove('fa-expand');
+            icon.classList.add('fa-compress');
+        } else {
+            document.exitFullscreen();
+            icon.classList.remove('fa-compress');
+            icon.classList.add('fa-expand');
+        }
     }
-}
 </script>

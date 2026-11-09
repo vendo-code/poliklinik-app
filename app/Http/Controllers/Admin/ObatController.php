@@ -34,7 +34,7 @@ class ObatController extends Controller
         ]);
 
         return redirect()
-            ->route('obat.index')
+            ->route('admin.obat.index')
             ->with('message', 'Data Obat Berhasil dibuat')
             ->with('type', 'success');
     }
@@ -62,7 +62,7 @@ public function update(Request $request, string $id)
         ]);
 
         return redirect()
-            ->route('obat.index')
+            ->route('admin.obat.index')
             ->with('message', 'Data Obat berhasil di edit')
             ->with('type', 'success');
     }
@@ -73,7 +73,7 @@ public function update(Request $request, string $id)
         $obat->delete();
 
         return redirect()
-            ->route('obat.index')
+            ->route('admin.obat.index')
             ->with('message', 'Data Obat berhasil di Hapus')
             ->with('type', 'success');
     }
